@@ -14,6 +14,9 @@ public class HelloWorldController {
     * */
     @RequestMapping(value = "/world")
     public  String   world() throws  Exception{
+        System.out.println("这是我写的");
+        System.out.println("这是还是我写的");
+
         System.out.println("Hello  SpringMVC");
         //跳转index.jsp
         return "index";
