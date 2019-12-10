@@ -1,0 +1,58 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+
+      <!--配置解决POST乱码问题的核心过滤器-->
+    <filter>
+        <filter-name>encodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <!--配置默认编码-->
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>encodingFilter</filter-name>
+        <!--所有的请求都以UTF-8进行编码-->
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+
+
+
+      <servlet>
+        <servlet-name>dispatcherServlet</servlet-name>
+        <!--作用：相当于Struts2的核心过滤器
+             主要针对于后台Action做请求转发的
+        -->
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <!--初始化核心类时 需要依赖SpringMVC的配置文件-->
+        <init-param>
+          <param-name>contextConfigLocation</param-name>
+          <param-value>classpath:dispatcher.xml</param-value>
+        </init-param>
+        <!--<load-on-startup> 作用：决定该Servlet加载的时机
+             0或者大于0   Tomcat启动时 加载该类
+             小于0或者不写  使用该Servlet时 才会被加载
+             数字越小 优先级越高
+          -->
+        <load-on-startup>1</load-on-startup>
+      </servlet>
+
+     <servlet-mapping>
+       <servlet-name>dispatcherServlet</servlet-name>
+       <!--
+         作用：配置的核心类目的是对Action的请求做请求转发 所以需要区分访问Action的URL和
+         访问静态资源的URL
+         *.do  所有访问后台Action的URL以.do结尾 核心类帮其做请求转发
+         其他的请求  直接略过核心类
+       -->
+       <url-pattern>*.do</url-pattern>
+     </servlet-mapping>
+
+
+</web-app>
